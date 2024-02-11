@@ -6,7 +6,7 @@ const Login = async (req, res) => {
         const user = await User.findOne({ email: req.body.email });
         if (!user) return res.json({ success: false, field: 'user' });
         if (!user.verified) return res.json({ success: false, field: 'verify' });
-        if (!(bcrypt.compare(req.body.password, user.password))) return res.json({ success: false, field: 'password' });
+        if (!(await bcrypt.compare(req.body.password, user.password))) return res.json({ success: false, field: 'password' });
         const refer = await Refer.findOne({ user: user._id });
         const currUser = {
             username: user.username,
